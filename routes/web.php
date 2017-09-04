@@ -17,4 +17,26 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard', 'AdminController@index')->name('admin');
+/**
+ * All admin routes
+ */
+Route::group(['prefix' => 'admin'], function (){
+    Route::get('/', 'AdminController@index')->name('admin');
+    // All category model routes
+    Route::resource('/category', 'CategoryController',[
+        'except' => ['destroy','update']
+    ])->names('admin.category');
+
+    Route::get('category/{id}/delete',[
+        'uses' => 'CategoryController@delete',
+        'as' => 'admin.category.delete'
+    ]);
+
+    Route::post('category/{id}/update',[
+        'uses' => 'CategoryController@update',
+        'as' => 'admin.category.update'
+    ]);
+
+});
+
+

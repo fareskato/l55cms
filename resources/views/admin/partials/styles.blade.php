@@ -1,24 +1,24 @@
 <!-- Bootstrap 3.3.7 -->
-<link rel="stylesheet" href="{{asset('admin/css/bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/bootstrap.min.css')}}">
 <!-- Font Awesome -->
-<link rel="stylesheet" href="{{asset('admin/css/font-awesome.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/font-awesome.min.css')}}">
 <!-- Ionicons -->
-<link rel="stylesheet" href="{{asset('admin/css/ionicons.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/ionicons.min.css')}}">
 <!-- Theme style -->
-<link rel="stylesheet" href="{{asset('admin/css/AdminLTE.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/AdminLTE.min.css')}}">
 <!-- AdminLTE Skins. Choose a skin from the css/skins
      folder instead of downloading all of them to reduce the load. -->
-<link rel="stylesheet" href="{{asset('admin/css/_all-skins.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/_all-skins.min.css')}}">
 <!-- Morris chart -->
-<link rel="stylesheet" href="{{asset('admin/css/morris.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/morris.css')}}">
 <!-- jvectormap -->
-<link rel="stylesheet" href="{{asset('admin/css/jquery-jvectormap.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/jquery-jvectormap.css')}}">
 <!-- Date Picker -->
-<link rel="stylesheet" href="{{asset('admin/css/bootstrap-datepicker.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/bootstrap-datepicker.min.css')}}">
 <!-- Daterange picker -->
-<link rel="stylesheet" href="{{asset('admin/css/daterangepicker.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/daterangepicker.css')}}">
 <!-- bootstrap wysihtml5 - text editor -->
-<link rel="stylesheet" href="{{asset('admin/css/bootstrap3-wysihtml5.min.css')}}">
+<link rel="stylesheet" href="{{asset('backend/css/bootstrap3-wysihtml5.min.css')}}">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

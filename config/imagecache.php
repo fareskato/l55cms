@@ -15,8 +15,8 @@ return array(
     | Examples: "images", "img/cache"
     |
     */
-   
-    'route' => null,
+
+    'route' => public_path("images"),
 
     /*
     |--------------------------------------------------------------------------

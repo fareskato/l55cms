@@ -13,7 +13,7 @@
     <title>Home</title>
     <!-- Bootstrap core CSS -->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('admin/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/css/font-awesome.min.css')}}">
     <!-- Custom styles for this template -->
     <link href="{{asset('css/jquery.bxslider.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
@@ -49,7 +49,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 {{--<script src="{{asset('js/jquery.min.js')}}"></script>--}}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="{{asset('admin/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('backend/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/jquery.bxslider.min.js')}}"></script>
 <script src="{{asset('js/mooz.scripts.min.js')}}"></script>
 </body>

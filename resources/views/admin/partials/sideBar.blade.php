@@ -55,8 +55,8 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> New category</a></li>
-                    <li><a href="index2.html"><i class="fa fa-circle-o"></i> All categories</a></li>
+                    <li><a href="{{route('admin.category.index')}}"><i class="fa fa-circle-o"></i> All categories</a></li>
+                    <li class="active"><a href="{{route('admin.category.create')}}"><i class="fa fa-circle-o"></i> New category</a></li>
                 </ul>
             </li>
             <li class=" treeview">
