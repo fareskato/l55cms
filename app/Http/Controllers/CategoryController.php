@@ -58,12 +58,6 @@ class CategoryController extends Controller
 
         // Record modifying buttons
         $data['action_buttons'] = [
-            'show' => [
-                'name' => 'show',
-                'class' => 'eye fa-2x text-primary',
-                'type' => 'category',
-                'value' => 'Show',
-            ],
             'edit' => [
                 'name' => 'edit',
                 'class' => 'pencil-square-o fa-2x text-success',
