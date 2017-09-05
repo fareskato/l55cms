@@ -45,8 +45,8 @@
                 </a>
             </li>
             <li>
-                <a href="pages/calendar.html">
-                    <i class="fa fa-calendar"></i> <span>Tags</span>
+                <a href="{{route('admin.tag.index')}}">
+                    <i class="fa fa-tags"></i> <span>Tags</span>
                 </a>
             </li>
             <li class=" treeview">

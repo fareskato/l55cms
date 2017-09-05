@@ -22,7 +22,7 @@ Auth::routes();
  */
 Route::group(['prefix' => 'admin'], function (){
     Route::get('/', 'AdminController@index')->name('admin');
-    // All category model routes
+    // Category routes
     Route::resource('/category', 'CategoryController',[
         'except' => ['destroy','update']
     ])->names('admin.category');
@@ -36,6 +36,21 @@ Route::group(['prefix' => 'admin'], function (){
         'uses' => 'CategoryController@update',
         'as' => 'admin.category.update'
     ]);
+
+    // Tag routes
+    Route::resource('/tag', 'TagController',[
+        'except' => ['destroy','update']
+    ])->names('admin.tag');
+
+    Route::get('tag/{id}/delete',[
+        'uses' => 'TagController@delete',
+        'as' => 'admin.tag.delete'
+    ]);
+    Route::post('tag/{id}/update',[
+        'uses' => 'TagController@update',
+        'as' => 'admin.tag.update'
+    ]);
+
 
 });
 

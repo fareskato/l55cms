@@ -1,26 +1,17 @@
 <?php
 
-/**
- * VERY Important : pass the $data array without compact to access all keys directly in the view
- */
 namespace App\Http\Controllers;
 
-use App\Category;
-use Carbon\Carbon;
+use App\Tag;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
-    const ENTITY_NAME = 'Category';
+
+    const ENTITY_NAME = 'Tag';
 
     /**
-     * Uploaded images folder path
-     */
-    const IMAGES_PATH = "images". DIRECTORY_SEPARATOR;
-
-    /**
-     * CategoryController constructor.
+     * TagController constructor.
      * Just authenticated user
      */
     public function __construct()
@@ -28,20 +19,22 @@ class CategoryController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index()
+    {
         // Initial data
         $data = [];
 
         // Get all records
-        $data['data_list']= Category::all();
+        $data['data_list']= Tag::all();
 
         // Data will display in table
-        $data['data_fields'] = ['image', 'name','updated_at'];
+        $data['data_fields'] = ['id', 'name'];
 
         // Name of Entity
         $data['data_entity'] = self::ENTITY_NAME;
@@ -51,12 +44,6 @@ class CategoryController extends Controller
 
         // Action buttons title
         $data['data_actions'] = 'Actions';
-
-        // Images path
-        $data['images_path'] = self::IMAGES_PATH;
-
-        // image thumbnail
-        $data['data_thumbnail'] = 'small';
 
         // Record modifying buttons
         $data['action_buttons'] = [
@@ -78,7 +65,7 @@ class CategoryController extends Controller
         $data['data_top_buttons'] = $this->generateTopButtons();
 
         // render template
-        return view('admin.category.list', $data);
+        return view('admin.tag.list', $data);
     }
 
     /**
@@ -106,58 +93,32 @@ class CategoryController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         // Create new record
-        $record = new Category();
+        $record = new Tag();
 
         // Validation
         $options = [
-          'name' => 'required|min:3',
-          'body' => 'required'
+            'name' => 'required|min:3',
         ];
         // validate the request
-        $request->validate($options);
+        $clean_data = $request->validate($options);
 
-        // Map data
-        $record['name'] = $request->name;
-        $record['slug'] = str_slug($request->name);
-        $record['body'] = $request->body;
-
-        //Image handling
-        if($request->hasFile('image')){
-            // 01-  upload the image
-            $img = Image::make($request->file('image'));
-            // 02- rename the uploaded image
-            $img_name =  Carbon::now()->timestamp.'_'.$request->file('image')->getClientOriginalName();
-            // 03- save image in target folder
-            $img->save(public_path('/'). self::IMAGES_PATH . $img_name );
-            // 04- save image name in the Database
-            $record['image'] = $img_name;
-        }
         // Create the record
-        $record->save();
+        $record->create($clean_data);
 
         // redirect to list
-        return redirect()->route('admin.category.index');
-    }
-
-
-    /**
-     * Display the specified resource.
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
+        return redirect()->route('admin.tag.index');
     }
 
     /**
      * Show the form for editing the specified resource.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -173,7 +134,7 @@ class CategoryController extends Controller
         $data['data_top_buttons'] = $this->generateTopButtons($id);
 
         // Get the record
-        $data['record'] = Category::findOrFail($id);
+        $data['record'] = Tag::findOrFail($id);
 
         // Form fields
         $data['form'] = $this->generateForm($id, $data['record']);
@@ -184,6 +145,7 @@ class CategoryController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -191,65 +153,35 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         // Get the record
-        $record = Category::findOrFail($id);
+        $record = Tag::findOrFail($id);
 
         // Validation
         $options = [
             'name' => 'required|min:3',
-            'body' => 'required'
         ];
         // validate the request
-        $request->validate($options);
+        $clean_data = $request->validate($options);
 
-        // Map data
-        $record['name'] = $request->name;
-        $record['slug'] = str_slug($request->name);
-        $record['body'] = $request->body;
-
-        //Image handling
-        if($request->hasFile('image')){
-            // 01-  upload the image
-            $img = Image::make($request->file('image'));
-            // 02- rename the uploaded image
-            $img_name =  Carbon::now()->timestamp.'_'.$request->file('image')->getClientOriginalName();
-            // 03- save image in target folder
-            $img->save(public_path('/'). self::IMAGES_PATH . $img_name );
-            // 04- Remove the old image
-            if($record['image']){
-                $old_category_image = public_path("/"). self::IMAGES_PATH .$record['image'];
-                unlink($old_category_image);
-            }
-            // 05- save image name in the Database
-            $record['image'] = $img_name;
-        }
         // Create the record
-        $record->save();
+        $record->update($clean_data);
 
         // redirect to list
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.tag.index');
     }
-
 
     /**
      * Remove the specified resource from storage.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function delete($id)
     {
         // Get category
-        $category = Category::findOrFail($id);
-        // Delete category and image (if exists)
-        if($category->image !== null){
-            $category_image = public_path("/"). self::IMAGES_PATH .$category->image ;
-            $category->delete();
-            unlink($category_image);
-        }
-        // Or just delete category
-        $category->delete();
-
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
         // Redirect to list page
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.tag.index');
     }
 
 
@@ -262,7 +194,7 @@ class CategoryController extends Controller
     private function generateForm($id =0, $record = null)
     {
         $form = [
-            'action' => (isset($record)) ? route('admin.category.update', ['id' => $id]) :  route('admin.category.store'),
+            'action' => (isset($record)) ? route('admin.tag.update', ['id' => $id]) :  route('admin.tag.store'),
             'fields' => [
                 'name' => [
                     'name' => 'name',
@@ -270,30 +202,13 @@ class CategoryController extends Controller
                     'required' => 'required',
                     'type' => 'text',
                     'label' =>  self::ENTITY_NAME . ' ' .'name',
-                    'placeholder' => 'Enter category name',
+                    'placeholder' => 'Enter tag name',
                     'value' => (isset($record))  ? $record->name : '',
-                ],
-                'body' => [
-                    'name' => 'body',
-                    'id' => 'body',
-                    'required' => 'required',
-                    'type' => 'textarea',
-                    'label' =>  self::ENTITY_NAME . ' ' .'body',
-                    'placeholder' => 'Enter category body',
-                    'value' => (isset($record))  ? $record->body : '',
-                ],
-                'image' => [
-                    'name' => 'image',
-                    'id' => 'image',
-                    'required' => '',
-                    'type' => 'file',
-                    'label' => self::ENTITY_NAME . ' ' .'image',
-                    'value' => '',
                 ],
             ],
             'save_button' => [
                 'type' => 'submit',
-                'name' =>  ($id > 0) ? 'edit_category' : 'add_category',
+                'name' =>  ($id > 0) ? 'edit_tag' : 'add_tag',
                 'value' => 'Save',
             ]
         ];
@@ -313,17 +228,21 @@ class CategoryController extends Controller
             'add' => [
                 'name' => 'add',
                 'class' => 'primary ' .$class,
-                'url' => route('admin.category.create'),
+                'url' => route('admin.tag.create'),
                 'value' => 'Add'
             ],
             'cancel' => [
                 'name' => 'cancel',
                 'class' => 'default',
-                'url' =>  route('admin.category.index'),
+                'url' =>  route('admin.tag.index'),
                 'value' => 'Cancel'
             ]
         ];
         return $top_buttons;
     }
+
+
+
+
 
 }
