@@ -35,7 +35,7 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> New post</a></li>
+                    <li class="active"><a href="{{route('admin.post.create')}}"><i class="fa fa-circle-o"></i> New post</a></li>
                     <li><a href="{{route('admin.post.index')}}"><i class="fa fa-circle-o"></i> All posts</a></li>
                 </ul>
             </li>
