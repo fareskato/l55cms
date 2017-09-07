@@ -50,7 +50,24 @@ Route::group(['prefix' => 'admin'], function (){
         'uses' => 'TagController@update',
         'as' => 'admin.tag.update'
     ]);
+    // Post routes
+    Route::resource('/post', 'PostController',[
+        'except' => ['destroy','update']
+    ])->names('admin.post');
 
+    Route::get('post/{id}/delete',[
+        'uses' => 'PostController@delete',
+        'as' => 'admin.post.delete'
+    ]);
+
+    Route::post('post/{id}/update',[
+        'uses' => 'PostController@update',
+        'as' => 'admin.post.update'
+    ]);
+    Route::get('post/{id}/publish',[
+        'uses' => 'PostController@publish',
+        'as' => 'admin.post.publish'
+    ]);
 
 });
 

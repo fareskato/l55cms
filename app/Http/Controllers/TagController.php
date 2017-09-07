@@ -51,13 +51,11 @@ class TagController extends Controller
                 'name' => 'edit',
                 'class' => 'pencil-square-o fa-2x text-success',
                 'type' => strtolower(self::ENTITY_NAME),
-                'value' => 'Edit',
             ],
             'delete' => [
                 'name' => 'delete',
                 'class' => 'times fa-2x text-danger',
                 'type' => strtolower(self::ENTITY_NAME),
-                'value' => 'Delete'
             ]
         ];
 

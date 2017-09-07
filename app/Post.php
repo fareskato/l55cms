@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $fillable = ['status'];
 
     /**
      * Many to Many with tags
@@ -13,6 +14,14 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    /**
+     * one to Many with category
+     */
+    public function category()
+    {
+        return$this->belongsTo(Category::class);
     }
 
 }

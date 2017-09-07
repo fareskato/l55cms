@@ -4,6 +4,6 @@
         @if ($errors->has($field['name']))
             <div class="bg-danger">{{ $errors->first($field['name']) }}</div>
         @endif
-        <textarea name="{{$field['name']}}"  class="form-control textarea" id="{{$field['id']}}" rows="5" placeholder="{{$field['placeholder']}}" @if($field['required']== 'required') required @endif>@if($field['value']){{$field['value']}}@endif</textarea>
+        <textarea name="{{$field['name']}}"  class="form-control" id="{{$field['id']}}" rows="5" placeholder="{{$field['placeholder']}}" @if($field['required']== 'required') required @endif>@if($field['value']){{$field['value']}}@endif</textarea>
     </div>
 </div>

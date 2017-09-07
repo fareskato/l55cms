@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     @php(define('DS', DIRECTORY_SEPARATOR)){{-- General form for all entities --}}
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-10 col-md-offset-1">
 
     <form action="{{$form['action']}}" class="form-horizontal" method="post" enctype="multipart/form-data">
         {{csrf_field()}}
@@ -16,7 +16,9 @@
                 @if($field['type'] == 'file')
                     @include('admin.form_fields.input_file')
                 @endif
-
+                @if($field['type'] == 'select')
+                    @include('admin.form_fields.input_select')
+                @endif
             @endforeach
                 <div class="col-md-12" style="padding: 0">
                     <button type="submit" name="{{$form['save_button']['name']}}" class="btn btn-block bg-navy">{{$form['save_button']['value']}}</button>
