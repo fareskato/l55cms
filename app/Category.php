@@ -15,4 +15,17 @@ class Category extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    /**
+     * Search scope
+     * @param $query
+     * @param $find
+     * @return mixed
+     */
+    public function scopeGetByNameOrBody($query, $find)
+    {
+        return $query->where('name','like','%'.$find.'%')
+                     ->orWhere('body','like','%'.$find.'%');
+    }
+
 }

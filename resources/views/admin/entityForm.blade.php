@@ -3,7 +3,12 @@
     @php(define('DS', DIRECTORY_SEPARATOR)){{-- General form for all entities --}}
 <div class="col-md-10 col-md-offset-1">
 
-    <form action="{{$form['action']}}" class="form-horizontal" method="post" enctype="multipart/form-data">
+    <form action="{{$form['action']}}" class="form-horizontal" method="POST" enctype="multipart/form-data">
+        {{-- if is edit form make form method PATCH --}}
+        @if($form['is_edit'] === true)
+            {!! method_field('patch') !!}
+        @endif
+        {{-- Token field for security --}}
         {{csrf_field()}}
         <div class="box-body">
             @foreach($form['fields'] as $field)

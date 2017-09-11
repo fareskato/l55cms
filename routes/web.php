@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+
+
+
+
 Auth::routes();
 
 /**
@@ -22,9 +26,15 @@ Auth::routes();
  */
 Route::group(['prefix' => 'admin'], function (){
     Route::get('/', 'AdminController@index')->name('admin');
+
     // Category routes
+    Route::get('category/search', [
+        'uses' => 'CategoryController@search',
+        'as' => 'admin.category.search'
+    ]);
+
     Route::resource('/category', 'CategoryController',[
-        'except' => ['destroy','update']
+        'except' => ['destroy']
     ])->names('admin.category');
 
     Route::get('category/{id}/delete',[
@@ -32,10 +42,6 @@ Route::group(['prefix' => 'admin'], function (){
         'as' => 'admin.category.delete'
     ]);
 
-    Route::post('category/{id}/update',[
-        'uses' => 'CategoryController@update',
-        'as' => 'admin.category.update'
-    ]);
 
     // Tag routes
     Route::resource('/tag', 'TagController',[
@@ -67,6 +73,20 @@ Route::group(['prefix' => 'admin'], function (){
     Route::get('post/{id}/publish',[
         'uses' => 'PostController@publish',
         'as' => 'admin.post.publish'
+    ]);
+
+    // User routes
+    Route::get('/user',[
+        'uses' => 'AdminController@list',
+        'as' => 'admin.user.index'
+    ]);
+    Route::get('/user/create',[
+        'uses' => 'AdminController@create',
+        'as' => 'admin.user.create'
+    ]);
+    Route::post('/user',[
+        'uses' => 'AdminController@store',
+        'as' => 'admin.user.store'
     ]);
 
 });

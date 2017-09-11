@@ -15,7 +15,7 @@ class PostController extends Controller
     const ENTITY_NAME = 'Post';
 
     // pagination
-    const LIMIT = 3;
+    const LIMIT = 10;
 
     /**
      * Uploaded images folder path

@@ -9,7 +9,8 @@
             @endif
         </h2>
     </div>
-
+    {{-- Search form --}}
+    @include('admin.partials.search')
     <div class="col-lg-3 pull-right">
      @include('admin.partials.topButtons')
     </div>

@@ -15,30 +15,23 @@
                 @if(count($data_list) > 0)
                     @foreach($data_list as $item)
                     <tr role="row" class="">
-                        @foreach($data_fields as $field)
-                            @if($field == 'image')
-                                <td class=""><img src="{{public_path('/'). $images_path . $data_thumbnail .DS. $item[$field]}}">
-                                </td>
-                            @endif
-                            @if($field != 'image')
-                                 <td class="">
-                                     @if($field == 'updated_at' )
-                                        {{$item->updated_at->diffForHumans()}}
-                                     @elseif($field != 'updated_at' )
-                                        {{$item[$field]}}
-                                     @endif
-                                 </td>
-                            @endif
-                        @endforeach
+                        <td class="">{!! $item->id !!}</td>
+                        <td>{!! $item->name !!}</td>
+                        <td>{!! $item->email !!}</td>
+                        <td>@php(print_r($item->roles()))</td>
                         <td>
                             @foreach($action_buttons as $action_button)
-                                @php($action_link = route($action_button['route'], $item->id))
+                                @php($action_link = $action_button['url'])
                                     @if(isset($action_button['not_link']) and $action_button['not_link'] === true )
                                         @php($action_link = '')
                                     @endif
                                     <a href="{{$action_link}}"
                                        @if($action_button['name'] == 'delete')onclick="return confirm('Are you sure you want to delete this item?');" @endif>
-                                        <i class="fa fa-{{$action_button['class']}}"aria-hidden="true"></i>
+                                        <i class="fa fa-{{$action_button['class']}}"aria-hidden="true">
+                                            @if(isset($action_button['value']) and $action_button['value'] != '' )
+                                                {{$action_button['value']}}
+                                            @endif
+                                        </i>
                                     </a>
                             @endforeach
                         </td>
@@ -51,8 +44,6 @@
                 @endif
                 </tbody>
         </table>
-
-
-
-
+        {{-- Pagination --}}
+    {{$data_list->links()}}
 @endsection

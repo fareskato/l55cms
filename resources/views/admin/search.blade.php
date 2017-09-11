@@ -46,10 +46,11 @@
                 @endforeach
                 @else
                     <tr>
-                        <td colspan=100%><h2 class="text-center">Woops ! there is no {{$data_entity}}</h2></td>
+                        <td colspan=100%><h2 class="text-center">Woops ! no {{$data_entity}} found :( please search again </h2></td>
                     </tr>
                 @endif
                 </tbody>
+
         </table>
 
 
