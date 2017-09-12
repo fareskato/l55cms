@@ -39,56 +39,11 @@ class PostController extends Controller
      */
     public function index(){
 
-        // Initial data
-        $data = [];
+        // Get data fields
+        $data = $this->indexSearchData();
 
         // Get all records
         $data['data_list']= Post::orderBy('created_at', 'disc')->simplePaginate(self::LIMIT); // or paginate(3)
-
-        // Data will display in table
-        $data['data_fields'] = ['image', 'title', 'category_id', 'status'];
-
-        // Name of Entity
-        $data['data_entity'] = self::ENTITY_NAME;
-
-        // Will be displayed on page header
-        $data['data_title'] = self::ENTITY_NAME;
-
-        // Action buttons title
-        $data['data_actions'] = 'Actions';
-
-        // Images path
-        $data['images_path'] = self::IMAGES_PATH;
-
-        // image thumbnail
-        $data['data_thumbnail'] = 'small';
-
-        // Record modifying buttons
-        $data['action_buttons'] = [
-            'publish' => [
-                'name' => 'publish',
-                'class' => 'repeat fa-2x text-black',
-                'type' => strtolower(self::ENTITY_NAME),
-            ],
-            'show' => [
-                'name' => 'show',
-                'class' => 'eye fa-2x text-primary',
-                'type' => strtolower(self::ENTITY_NAME),
-            ],
-            'edit' => [
-                'name' => 'edit',
-                'class' => 'pencil-square-o fa-2x text-success',
-                'type' => strtolower(self::ENTITY_NAME),
-            ],
-            'delete' => [
-                'name' => 'delete',
-                'class' => 'times fa-2x text-danger',
-                'type' => strtolower(self::ENTITY_NAME),
-            ]
-        ];
-
-        // Back and add buttons
-        $data['data_top_buttons'] = $this->generateTopButtons();
 
         // render template
         return view('admin.post.list', $data);
@@ -323,6 +278,9 @@ class PostController extends Controller
 
         $form = [
             'action' => (isset($record)) ? route('admin.post.update', ['id' => $id]) :  route('admin.post.store'),
+            // Determine if add or edit
+            'is_edit' => (isset($record)) ? true :  false,
+
             'fields' => [
                 'title' => [
                     'name' => 'title',
@@ -395,6 +353,92 @@ class PostController extends Controller
             ]
         ];
         return $top_buttons;
+    }
+
+    /**
+     * Search
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function search(Request $request)
+    {
+        // Get data fields
+        $data = $this->indexSearchData();
+
+        // Search
+        $text = $request->input('s');
+
+        // Search by name or body
+        $data['data_list'] = Post::getByNameOrBody($text,'title', 'body')->simplePaginate(self::LIMIT);
+
+        // render template
+        return view('admin.search', $data);
+
+    }
+
+
+
+    /**
+     * Data uses for index and search
+     * @return array
+     */
+    private function indexSearchData()
+    {
+        // Initial data
+        $data = [];
+        // Determine the search form route
+        $data['search_route'] = route('admin.post.search');
+
+        // Data will display in table
+        $data['data_fields'] = ['image', 'title', 'category_id', 'status'];
+
+        // Name of Entity
+        $data['data_entity'] = self::ENTITY_NAME;
+
+        // Will be displayed on page header
+        $data['data_title'] = self::ENTITY_NAME;
+
+        // Action buttons title
+        $data['data_actions'] = 'Actions';
+
+        // Images path
+        $data['images_path'] = self::IMAGES_PATH;
+
+        // image thumbnail
+        $data['data_thumbnail'] = 'small';
+
+        // Record modifying buttons
+        $data['action_buttons'] = [
+            'publish' => [
+                'name' => 'publish',
+                'class' => 'repeat fa-2x text-black',
+                'type' => strtolower(self::ENTITY_NAME),
+                'route' => 'admin.post.publish'
+            ],
+            'show' => [
+                'name' => 'show',
+                'class' => 'eye fa-2x text-primary',
+                'type' => strtolower(self::ENTITY_NAME),
+                'route' => 'admin.post.show'
+            ],
+            'edit' => [
+                'name' => 'edit',
+                'class' => 'pencil-square-o fa-2x text-success',
+                'type' => strtolower(self::ENTITY_NAME),
+                'route' => 'admin.post.edit'
+            ],
+            'delete' => [
+                'name' => 'delete',
+                'class' => 'times fa-2x text-danger',
+                'type' => strtolower(self::ENTITY_NAME),
+                'route' => 'admin.post.delete'
+            ]
+        ];
+
+        // Back and add buttons
+        $data['data_top_buttons'] = $this->generateTopButtons();
+
+        return $data;
     }
 
 

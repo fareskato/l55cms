@@ -22,4 +22,18 @@ class Post extends FaresModel
         return$this->belongsTo(Category::class);
     }
 
+    /**
+     * Search scope for all entities
+     * @param $query
+     * @param $find
+     * @param $field1
+     * @param $field2
+     * @return mixed
+     */
+    public function scopeGetByNameOrBody($query, $find, $field1, $field2 )
+    {
+        return $query->where($field1,'like','%'.$find.'%')
+            ->orWhere($field2,'like','%'.$find.'%');
+    }
+
 }

@@ -40,9 +40,7 @@ Route::group(['prefix' => 'admin'], function (){
         'as' => 'admin.category.delete'
     ]);
 
-
     // Tag routes
-
     Route::get('tag/search', [
         'uses' => 'TagController@search',
         'as' => 'admin.tag.search'
@@ -56,18 +54,17 @@ Route::group(['prefix' => 'admin'], function (){
     ]);
 
     // Post routes
+    Route::get('post/search', [
+        'uses' => 'PostController@search',
+        'as' => 'admin.post.search'
+    ]);
     Route::resource('/post', 'PostController',[
-        'except' => ['destroy','update']
+        'except' => ['destroy']
     ])->names('admin.post');
 
     Route::get('post/{id}/delete',[
         'uses' => 'PostController@delete',
         'as' => 'admin.post.delete'
-    ]);
-
-    Route::post('post/{id}/update',[
-        'uses' => 'PostController@update',
-        'as' => 'admin.post.update'
     ]);
     Route::get('post/{id}/publish',[
         'uses' => 'PostController@publish',
