@@ -32,11 +32,9 @@ Route::group(['prefix' => 'admin'], function (){
         'uses' => 'CategoryController@search',
         'as' => 'admin.category.search'
     ]);
-
     Route::resource('/category', 'CategoryController',[
         'except' => ['destroy']
     ])->names('admin.category');
-
     Route::get('category/{id}/delete',[
         'uses' => 'CategoryController@delete',
         'as' => 'admin.category.delete'
@@ -44,18 +42,19 @@ Route::group(['prefix' => 'admin'], function (){
 
 
     // Tag routes
-    Route::resource('/tag', 'TagController',[
-        'except' => ['destroy','update']
-    ])->names('admin.tag');
 
+    Route::get('tag/search', [
+        'uses' => 'TagController@search',
+        'as' => 'admin.tag.search'
+    ]);
+    Route::resource('/tag', 'TagController',[
+        'except' => ['destroy']
+    ])->names('admin.tag');
     Route::get('tag/{id}/delete',[
         'uses' => 'TagController@delete',
         'as' => 'admin.tag.delete'
     ]);
-    Route::post('tag/{id}/update',[
-        'uses' => 'TagController@update',
-        'as' => 'admin.tag.update'
-    ]);
+
     // Post routes
     Route::resource('/post', 'PostController',[
         'except' => ['destroy','update']

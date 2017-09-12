@@ -21,7 +21,7 @@
                         @endforeach
                         <td>
                             @foreach($action_buttons as $action_button)
-                                @php($action_link = $action_button['type'] . DS . $item->id . DS . $action_button['name'])
+                                @php($action_link = route($action_button['route'], $item->id))
                                     @if(isset($action_button['not_link']) and $action_button['not_link'] === true )
                                         @php($action_link = '')
                                     @endif

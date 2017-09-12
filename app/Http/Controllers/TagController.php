@@ -27,40 +27,11 @@ class TagController extends Controller
      */
     public function index()
     {
-        // Initial data
-        $data = [];
+        // Get data fields
+        $data = $this->indexSearchData();
 
         // Get all records
         $data['data_list']= Tag::all();
-
-        // Data will display in table
-        $data['data_fields'] = ['id', 'name'];
-
-        // Name of Entity
-        $data['data_entity'] = self::ENTITY_NAME;
-
-        // Will be displayed on page header
-        $data['data_title'] = self::ENTITY_NAME;
-
-        // Action buttons title
-        $data['data_actions'] = 'Actions';
-
-        // Record modifying buttons
-        $data['action_buttons'] = [
-            'edit' => [
-                'name' => 'edit',
-                'class' => 'pencil-square-o fa-2x text-success',
-                'type' => strtolower(self::ENTITY_NAME),
-            ],
-            'delete' => [
-                'name' => 'delete',
-                'class' => 'times fa-2x text-danger',
-                'type' => strtolower(self::ENTITY_NAME),
-            ]
-        ];
-
-        // Back and add buttons
-        $data['data_top_buttons'] = $this->generateTopButtons();
 
         // render template
         return view('admin.tag.list', $data);
@@ -193,6 +164,10 @@ class TagController extends Controller
     {
         $form = [
             'action' => (isset($record)) ? route('admin.tag.update', ['id' => $id]) :  route('admin.tag.store'),
+
+            // Determine if add or edit
+            'is_edit' => (isset($record)) ? true :  false,
+
             'fields' => [
                 'name' => [
                     'name' => 'name',
@@ -240,6 +215,71 @@ class TagController extends Controller
     }
 
 
+    /**
+     * Search
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function search(Request $request)
+    {
+        // Get data fields
+        $data = $this->indexSearchData();
+
+        // Search
+        $text = $request->input('s');
+
+
+        // Search by name or body
+        $data['data_list'] = Tag::getByNameOrBody($text,'name')->get();
+        // render template
+        return view('admin.search', $data);
+
+    }
+
+
+
+    private function indexSearchData()
+    {
+        // Initial data
+        $data = [];
+
+        // Determine the search form route
+        $data['search_route'] = route('admin.tag.search');
+
+        // Data will display in table
+        $data['data_fields'] = ['id', 'name'];
+
+        // Name of Entity
+        $data['data_entity'] = self::ENTITY_NAME;
+
+        // Will be displayed on page header
+        $data['data_title'] = self::ENTITY_NAME;
+
+        // Action buttons title
+        $data['data_actions'] = 'Actions';
+
+        // Record modifying buttons
+        $data['action_buttons'] = [
+            'edit' => [
+                'name' => 'edit',
+                'class' => 'pencil-square-o fa-2x text-success',
+                'type' => strtolower(self::ENTITY_NAME),
+                'route' => 'admin.tag.edit'
+            ],
+            'delete' => [
+                'name' => 'delete',
+                'class' => 'times fa-2x text-danger',
+                'type' => strtolower(self::ENTITY_NAME),
+                'route' => 'admin.tag.delete'
+            ]
+        ];
+
+        // Back and add buttons
+        $data['data_top_buttons'] = $this->generateTopButtons();
+
+        // Return the data
+        return $data;
+    }
 
 
 

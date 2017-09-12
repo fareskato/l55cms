@@ -34,51 +34,12 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        // Initial data
-        $data = [];
 
-        // Search route for searching
-        $data['search_route'] = route('admin.category.search');
+        // Get data fields
+        $data = $this->indexSearchData();
 
         // Get all records
         $data['data_list']= Category::all();
-
-        // Data will display in table
-        $data['data_fields'] = ['image', 'name','updated_at'];
-
-        // Name of Entity
-        $data['data_entity'] = self::ENTITY_NAME;
-
-        // Will be displayed on page header
-        $data['data_title'] = self::ENTITY_NAME;
-
-        // Action buttons title
-        $data['data_actions'] = 'Actions';
-
-        // Images path
-        $data['images_path'] = self::IMAGES_PATH;
-
-        // image thumbnail
-        $data['data_thumbnail'] = 'small';
-
-        // Record modifying buttons
-        $data['action_buttons'] = [
-            'edit' => [
-                'name' => 'edit',
-                'class' => 'pencil-square-o fa-2x text-success',
-                'type' => strtolower(self::ENTITY_NAME),
-                'route' => 'admin.category.edit'
-            ],
-            'delete' => [
-                'name' => 'delete',
-                'class' => 'times fa-2x text-danger',
-                'type' => strtolower(self::ENTITY_NAME),
-                'route' => 'admin.category.delete'
-            ]
-        ];
-
-        // Back and add buttons
-        $data['data_top_buttons'] = $this->generateTopButtons();
 
         // render template
         return view('admin.category.list', $data);
@@ -343,8 +304,30 @@ class CategoryController extends Controller
      */
     public function search(Request $request)
     {
+        // Get data fields
+        $data = $this->indexSearchData();
+
+        // Search
+        $text = $request->input('s');
+
+        // Search by name or body
+        $data['data_list'] = Category::getByNameOrBody($text,'name', 'body')->get();
+
+        // render template
+        return view('admin.search', $data);
+
+    }
+
+
+    /**
+     * Data uses for index and search
+     * @return array
+     */
+    private function indexSearchData()
+    {
         $data = [];
 
+        // Determine the search form route
         $data['search_route'] = route('admin.category.search');
 
         // Data will display in table
@@ -384,15 +367,7 @@ class CategoryController extends Controller
         // Back and add buttons
         $data['data_top_buttons'] = $this->generateTopButtons();
 
-        // Search
-        $text = $request->input('s');
-
-        // Search by name or body
-        $data['data_list'] = Category::getByNameOrBody($text)->get();
-
-        // render template
-        return view('admin.search', $data);
-
+        // Return the data
+        return $data;
     }
-
 }

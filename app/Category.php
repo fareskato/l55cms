@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Category extends FaresModel
 {
     protected $fillable = ['name', 'slug', 'body'];
 
@@ -16,16 +15,20 @@ class Category extends Model
         return $this->hasMany(Post::class);
     }
 
+
     /**
-     * Search scope
+     * Search scope for all entities
      * @param $query
      * @param $find
+     * @param $field1
+     * @param $field2
      * @return mixed
      */
-    public function scopeGetByNameOrBody($query, $find)
+    public function scopeGetByNameOrBody($query, $find, $field1, $field2 )
     {
-        return $query->where('name','like','%'.$find.'%')
-                     ->orWhere('body','like','%'.$find.'%');
+        return $query->where($field1,'like','%'.$find.'%')
+            ->orWhere($field2,'like','%'.$find.'%');
     }
+
 
 }
